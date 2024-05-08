@@ -2,4 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* For macOS */
+    -webkit-font-smoothing: antialiased;
+    /* For Windows */
+    -moz-osx-font-smoothing: grayscale;
+  }
+*::-webkit-scrollbar {
+    width: 3px;
+    @apply hidden lg:block;
+  }
+  *::-webkit-scrollbar-track {
+    background: #1b1c19;
+    display: none;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #14274A;
+    border-radius: 20px;
+    border: 3px solid #323230;
+    box-sizing: border-box;
+    display: none;
+  }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
