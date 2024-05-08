@@ -282,11 +282,17 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
                     label="Category"
                   >
                     {categories.length > 0 &&
-                      categories.map((category, i) => (
-                        <MenuItem key={`category${i}`} value={category.title}>
-                          {category.title}
-                        </MenuItem>
-                      ))}
+                      categories.map(
+                        (category, i) =>
+                          category.title !== "All Categories" && (
+                            <MenuItem
+                              key={`category${i}`}
+                              value={category.title}
+                            >
+                              {category.title}
+                            </MenuItem>
+                          )
+                      )}
                   </Select>
                   <div className="flex w-full justify-end gap-5">
                     <button

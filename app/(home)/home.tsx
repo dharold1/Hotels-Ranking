@@ -2,7 +2,8 @@
 import ListEmpty from "@/components/layouts/ListEmpty";
 import Filter from "@/components/ui/filter";
 import HotelCard from "@/components/ui/hotelCard";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setFilterOption } from "@/store/slices/generalSlice";
 import { HotelProps } from "@/types/general";
 import React, { useEffect, useState } from "react";
 
@@ -10,6 +11,10 @@ function Home() {
   const { hotels, categories, filterOption } = useAppSelector(
     (state) => state.general
   );
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(setFilterOption("All Categories"));
+  }, [dispatch]);
 
   const hotelsInSelectedCategory = hotels.filter(
     (hotel) =>
