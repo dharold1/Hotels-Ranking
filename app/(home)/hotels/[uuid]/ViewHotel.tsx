@@ -33,7 +33,7 @@ function ViewHotel({ uuid }: { uuid: string }) {
         ? JSON.parse(existingHotelsJSON)
         : [];
 
-      const indexToDelete = existingHotels.findIndex(
+      const indexToDelete = existingHotels?.findIndex(
         (hotel) => hotel.uuid === uuid
       );
 

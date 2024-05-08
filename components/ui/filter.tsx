@@ -24,6 +24,9 @@ export default function Filter({ options, defaultOption }: FilterProps) {
     dispatch(setFilterOption(title));
     setAnchorEl(null);
   };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   React.useEffect(() => {
     dispatch(setFilterOption(defaultOption));
     localStorage.setItem("categories", JSON.stringify(categories));
@@ -44,7 +47,7 @@ export default function Filter({ options, defaultOption }: FilterProps) {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleSelect}
+        onClose={handleClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}

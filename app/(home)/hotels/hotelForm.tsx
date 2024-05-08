@@ -126,12 +126,34 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
       existingCategories = JSON.parse(existingCategoriesJSON);
     }
 
-    const updatedCategories = existingCategories.filter(
-      (category) => category.title !== categoryToDelete
+    const selectedCategoryToDelete = existingCategories?.findIndex(
+      (category) => category.title === categoryToDelete
     );
 
-    localStorage.setItem("categories", JSON.stringify(updatedCategories));
-    dispatch(updateData());
+    if (selectedCategoryToDelete !== -1) {
+      existingCategories.splice(selectedCategoryToDelete, 1);
+      localStorage.setItem("categories", JSON.stringify(existingCategories));
+      toast.success(`Category deleted successfully!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      dispatch(updateData());
+    } else {
+      toast.error(`Category not found!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
   const handleCloseModal = () => {
     setShowModal(null);

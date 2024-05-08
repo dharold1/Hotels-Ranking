@@ -13,7 +13,8 @@ function Home() {
 
   const hotelsInSelectedCategory = hotels.filter(
     (hotel) =>
-      filterOption.includes("Categories") || hotel.category === filterOption
+      (filterOption.length > 0 && filterOption?.includes("Categories")) ||
+      hotel.category === filterOption
   );
   return (
     <div className="container  mt-36 sm:mt-24  mx-auto px-4 sm:px-12">
