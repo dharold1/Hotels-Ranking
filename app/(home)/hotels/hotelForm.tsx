@@ -37,20 +37,30 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
   const [countries, setCountries] = useState<string[]>([]);
   const [showModal, setShowModal] = useState<ModalType | null>(null);
   const [edit, setEdit] = useState({ show: false, category: "" });
-
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<
+    number | null
+  >(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    index: number
+  ) => {
     setAnchorEl(event.currentTarget);
+    setSelectedCategoryIndex(index);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setSelectedCategoryIndex(null);
   };
   const dispatch = useAppDispatch();
   const { categories } = useAppSelector((state) => state.general);
   const formikRef = useRef<FormikProps<HotelProps>>(null);
   const router = useRouter();
 
+  const handleCloseManageModal = () => {
+    setEdit({ show: false, category: "" }), handleCloseModal();
+  };
   useEffect(() => {
     const getCountries = async () => {
       const countriesData = await fetchCountries();
@@ -119,6 +129,7 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
     }
   };
   const handleDeleteCategory = (categoryToDelete: string) => {
+    console.log(categoryToDelete);
     const existingCategoriesJSON = localStorage.getItem("categories");
     let existingCategories: { title: string }[] = [];
 
@@ -346,7 +357,7 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
       </Modal>
       <Modal
         open={showModal === ModalType.Manage}
-        onClose={handleCloseModal}
+        onClose={handleCloseManageModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -355,7 +366,7 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
             {edit.show ? (
               <div className="space-y-5 relative bg-white sm:w-[500px] shadow-md rounded-lg px-4 py-2 flex flex-col justify-center items-center">
                 <button
-                  onClick={handleCloseModal}
+                  onClick={handleCloseManageModal}
                   className="absolute bg-transparent right-3 top-5 cursor-pointer"
                 >
                   <IoCloseSharp size={25} />
@@ -366,7 +377,7 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
                 </h3>
                 <CategoryForm
                   exisitingCategory={edit.category}
-                  handleClose={handleCloseModal}
+                  handleClose={handleCloseManageModal}
                 />
               </div>
             ) : (
@@ -390,21 +401,25 @@ function HotelForm({ hotelData }: { hotelData?: HotelProps }) {
                       <p className="font-medium">{category.title} </p>
                       <Button
                         className="bg-transparent hover:bg-gray-300"
-                        id="basic-button"
-                        aria-controls={open ? "basic-menu" : undefined}
+                        id={`basic-button-${i}`}
+                        aria-controls={open ? `basic-menu-${i}` : undefined}
                         aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
+                        aria-expanded={
+                          open && selectedCategoryIndex === i
+                            ? "true"
+                            : undefined
+                        }
+                        onClick={(event) => handleClick(event, i)}
                       >
                         <FaEllipsisVertical color="#14274A" />
                       </Button>
                       <Menu
-                        id="basic-menu"
+                        id={`basic-menu-${i}`}
                         anchorEl={anchorEl}
-                        open={open}
+                        open={open && selectedCategoryIndex === i}
                         onClose={handleClose}
                         MenuListProps={{
-                          "aria-labelledby": "basic-button",
+                          "aria-labelledby": `basic-button-${i}`,
                         }}
                       >
                         <MenuItem
