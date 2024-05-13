@@ -21,7 +21,7 @@ const initialState: {
 };
 
 const generalSlice = createSlice({
-  name: "beneficiaries",
+  name: "general",
   initialState,
   reducers: {
     setHotelData: (state, action: { payload: HotelProps[]; type: string }) => {
